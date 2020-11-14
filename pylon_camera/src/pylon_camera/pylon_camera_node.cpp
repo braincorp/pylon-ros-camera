@@ -427,6 +427,10 @@ bool PylonCameraNode::startGrabbing()
     CameraInfo initial_cam_info;
     setupInitialCameraInfo(initial_cam_info);
     camera_info_manager_->setCameraInfo(initial_cam_info);
+
+    // TODO
+    //setDemosaicingMode(pylon_camera_parameter_set_.demosaicing_mode_);
+
     if ( pylon_camera_parameter_set_.cameraInfoURL().empty() ||
          !camera_info_manager_->validateURL(pylon_camera_parameter_set_.cameraInfoURL()) )
     { 

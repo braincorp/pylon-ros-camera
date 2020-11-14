@@ -175,6 +175,8 @@ public:
 
     virtual float getSharpnessEnhancement();
 
+    virtual void setWhiteBalanceRatios(const PylonCameraParameter& parameters);
+
     virtual std::string setLightSourcePreset(const int& mode);
 
     virtual int getLightSourcePreset();
@@ -281,6 +283,7 @@ protected:
     typedef typename CameraTraitT::UserSetSelectorEnums UserSetSelectorEnums;
     typedef typename CameraTraitT::UserSetDefaultSelectorEnums UserSetDefaultSelectorEnums;
     typedef typename CameraTraitT::LineFormatEnums LineFormatEnums;
+    typedef typename CameraTraitT::BalanceRatioSelectorEnums BalanceRatioSelectorEnums;
 
 
     CBaslerInstantCameraT* cam_;
