@@ -26,7 +26,6 @@ find_package(
     COMPONENTS
      ${CATKIN_COMPONENTS}
      std_srvs
-     roslint
      dnb_msgs
 )
 
@@ -38,34 +37,6 @@ catkin_package(
     CATKIN_DEPENDS
      ${CATKIN_COMPONENTS}
 )
-
-set(
-    ROSLINT_CPP_OPTS
-     "--extensions=cpp,h,hpp" "--filter=-runtime/references,-readability/todo,-build/include_what_you_use"
-)
-
-roslint_cpp(
-    src/${PROJECT_NAME}/binary_exposure_search.cpp
-    src/${PROJECT_NAME}/encoding_conversions.cpp
-    src/${PROJECT_NAME}/main.cpp
-    src/${PROJECT_NAME}/${PROJECT_NAME}_node.cpp
-    src/${PROJECT_NAME}/${PROJECT_NAME}_parameter.cpp
-    src/${PROJECT_NAME}/${PROJECT_NAME}.cpp
-    src/${PROJECT_NAME}/write_device_user_id_to_camera.cpp
-    src/${PROJECT_NAME}/IPConfigAuto.cpp
-    include/${PROJECT_NAME}/binary_exposure_search.h
-    include/${PROJECT_NAME}/encoding_conversions.h
-    include/${PROJECT_NAME}/${PROJECT_NAME}_node.h
-    include/${PROJECT_NAME}/${PROJECT_NAME}_parameter.h
-    include/${PROJECT_NAME}/${PROJECT_NAME}.h
-    include/${PROJECT_NAME}/internal/${PROJECT_NAME}.h
-    include/${PROJECT_NAME}/internal/impl/${PROJECT_NAME}_base.hpp
-    include/${PROJECT_NAME}/internal/impl/${PROJECT_NAME}_dart.hpp
-    include/${PROJECT_NAME}/internal/impl/${PROJECT_NAME}_gige.hpp
-    include/${PROJECT_NAME}/internal/impl/${PROJECT_NAME}_usb.hpp
-)
-
-roslaunch_add_file_check(launch)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
