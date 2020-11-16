@@ -72,6 +72,7 @@ struct USBCameraTrait
     typedef Basler_UsbCameraParams::UserSetSelectorEnums UserSetSelectorEnums;
     typedef Basler_UsbCameraParams::UserSetDefaultEnums UserSetDefaultSelectorEnums;
     typedef Basler_UsbCameraParams::LineFormatEnums LineFormatEnums;
+    typedef Basler_UsbCameraParams::BalanceRatioSelectorEnums BalanceRatioSelectorEnums;
 
 
     static inline AutoTargetBrightnessValueType convertBrightness(const int& value)
@@ -81,6 +82,39 @@ struct USBCameraTrait
 };
 
 typedef PylonCameraImpl<USBCameraTrait> PylonUSBCamera;
+
+template <>
+void PylonUSBCamera::setWhiteBalanceRatios(const PylonCameraParameter& parameters)
+{
+    // TODO: Check for auto white balance and raise a warning if it is enabled
+
+    if ( parameters.balance_ratio_ )
+    {
+        try
+        {
+            if ( GenApi::IsAvailable(cam_->BalanceRatioSelector) && GenApi::IsAvailable(cam_->BalanceRatio) )
+            {
+                cam_->BalanceRatioSelector.SetValue(BalanceRatioSelectorEnums::BalanceRatioSelector_Red);
+                cam_->BalanceRatio.SetValue(parameters.balance_red_);
+                cam_->BalanceRatioSelector.SetValue(BalanceRatioSelectorEnums::BalanceRatioSelector_Green);
+                cam_->BalanceRatio.SetValue(parameters.balance_green_);
+                cam_->BalanceRatioSelector.SetValue(BalanceRatioSelectorEnums::BalanceRatioSelector_Blue);
+                cam_->BalanceRatio.SetValue(parameters.balance_blue_);
+            }
+            else
+            {
+                ROS_WARN_STREAM("Trying to set white balance R,G,B channels, but "
+                    << "BalanceRatio is unavailable for this camera");
+            }
+        }
+        catch ( const GenICam::GenericException &e )
+        {
+            ROS_ERROR_STREAM("Error while configuring white balance ratios: "
+                    << e.GetDescription());
+            return;
+        }
+    }
+}
 
 template <>
 bool PylonUSBCamera::applyCamSpecificStartupSettings(const PylonCameraParameter& parameters)
@@ -167,6 +201,13 @@ bool PylonUSBCamera::applyCamSpecificStartupSettings(const PylonCameraParameter&
             {
                 ROS_WARN("No User Set Is selected, Camera current setting will be used");
             }
+
+        // TODO
+        //cam_->PixelFormat.SetValue(PixelFormatEnums::PixelFormat_RGB8);
+        //cam_->DemosaicingMode.SetValue(DemosaicingModeEnums::DemosaicingMode_BaslerPGI);
+        //cam_->NoiseReduction.SetValue(0.0);
+        //cam_->SharpnessEnhancement.SetValue(3.8);
+        //ROS_INFO_STREAM("Set PGI mode");
     }
     catch ( const GenICam::GenericException &e )
     {

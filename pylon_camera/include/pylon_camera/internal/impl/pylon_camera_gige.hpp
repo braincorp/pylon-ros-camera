@@ -73,6 +73,7 @@ struct GigECameraTrait
     typedef Basler_GigECameraParams::UserSetDefaultSelectorEnums UserSetDefaultSelectorEnums;
     typedef Basler_GigECamera::LineFormatEnums LineFormatEnums;
     typedef Basler_GigECamera::GammaSelectorEnums GammaSelectorEnums;
+    typedef Basler_GigECameraParams::BalanceRatioSelectorEnums BalanceRatioSelectorEnums;
 
 
     static inline AutoTargetBrightnessValueType convertBrightness(const int& value)
@@ -83,6 +84,10 @@ struct GigECameraTrait
 
 typedef PylonCameraImpl<GigECameraTrait> PylonGigECamera;
 
+
+template <>
+void PylonGigECamera::setWhiteBalanceRatios(const PylonCameraParameter& parameters)
+{}
 
 template <>
 bool PylonGigECamera::setAutoflash(const std::map<int, bool> flash_on_lines)

@@ -41,6 +41,14 @@ PylonCameraParameter::PylonCameraParameter() :
         frame_rate_(5.0),
         camera_info_url_(""),
         image_encoding_(""),
+        balance_white_auto_(0),
+        demosaicing_mode_(0),
+        noise_reduction_(0.0),
+        sharpness_enhancement_(1.0),
+        balance_ratio_(false),
+        balance_red_(1.0),
+        balance_green_(1.0),
+        balance_blue_(1.0),
         binning_x_(1),
         binning_y_(1),
         binning_x_given_(false),
@@ -148,6 +156,51 @@ void PylonCameraParameter::readFromRosParameterServer(const ros::NodeHandle& nh)
             encoding = std::string("");
         }
         image_encoding_ = encoding;
+    }
+
+    if ( nh.hasParam("balance_white_auto") )
+    {
+        nh.getParam("balance_white_auto", balance_white_auto_);
+        std::cout << "balance white auto is given and has value " << balance_white_auto_ << std::endl;
+    }
+
+    if ( nh.hasParam("demosaicing_mode") )
+    {
+        nh.getParam("demosaicing_mode", demosaicing_mode_);
+        std::cout << "demosaicing mode is " << demosaicing_mode_ << std::endl;
+
+        if ( nh.hasParam("noise_reduction") )
+        {
+            nh.getParam("noise_reduction", noise_reduction_);
+            std::cout << "noise reduction set to" << noise_reduction_ << std::endl;
+        }
+
+        if ( nh.hasParam("sharpness_enhancement") )
+        {
+            nh.getParam("sharpness_enhancement", sharpness_enhancement_);
+            std::cout << "sharpness enhancement set to" << sharpness_enhancement_ << std::endl;
+        }
+    }
+
+    if ( nh.hasParam("balance_ratio") )
+    {
+        nh.getParam("balance_ratio", balance_ratio_);
+        std::cout << "white balance ratio manual mode set to " << balance_ratio_ << std::endl;
+
+        if ( nh.hasParam("balance_red"))
+        {
+            nh.getParam("balance_red", balance_red_);
+        }
+
+        if ( nh.hasParam("balance_green"))
+        {
+            nh.getParam("balance_green", balance_green_);
+        }
+
+        if ( nh.hasParam("balance_blue"))
+        {
+            nh.getParam("balance_blue", balance_blue_);
+        }
     }
 
     // ##########################
@@ -353,6 +406,26 @@ std::string PylonCameraParameter::shutterModeString() const
 const std::string& PylonCameraParameter::imageEncoding() const
 {
     return image_encoding_;
+}
+
+const int& PylonCameraParameter::balanceWhiteAuto() const
+{
+    return balance_white_auto_;
+}
+
+const int& PylonCameraParameter::demosaicingMode() const
+{
+    return demosaicing_mode_;
+}
+
+const float& PylonCameraParameter::noiseReduction() const
+{
+    return noise_reduction_;
+}
+
+const float& PylonCameraParameter::sharpnessEnhancement() const
+{
+    return sharpness_enhancement_;
 }
 
 bool PylonCameraParameter::setimageEncodingParam(const ros::NodeHandle& nh, const std::string& format) 

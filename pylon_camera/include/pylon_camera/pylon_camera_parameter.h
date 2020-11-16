@@ -96,6 +96,11 @@ public:
      */
     const std::string& imageEncoding() const;
 
+    const int& balanceWhiteAuto() const;
+    const int& demosaicingMode() const;
+    const float& noiseReduction() const;
+    const float& sharpnessEnhancement() const;
+
     /**
      * Setter for the image encoding
      */
@@ -306,6 +311,19 @@ public:
      */
     bool auto_flash_line_3_;
 
+    /**
+     * Auto white balance mode. 0 = off; 1 = Once, 2 = Continuous
+     */
+    int balance_white_auto_;
+
+    int demosaicing_mode_;
+    double sharpness_enhancement_;
+    double noise_reduction_;
+    bool balance_ratio_;
+    float balance_red_;
+    float balance_green_;
+    float balance_blue_;
+
 protected:
     /**
      * Validates the parameter set found on the ros parameter server.
@@ -348,6 +366,7 @@ protected:
      * 'bayer_gbrg8', 'bayer_rggb8' and 'yuv422'
      */
     std::string image_encoding_;
+
 };
 
 }  // namespace pylon_camera

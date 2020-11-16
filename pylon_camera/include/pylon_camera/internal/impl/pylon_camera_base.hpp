@@ -344,6 +344,14 @@ bool PylonCameraImpl<CameraTraitT>::startGrabbing(const PylonCameraParameter& pa
             return false;
         }
 
+        setBalanceWhiteAuto(parameters.balanceWhiteAuto());
+        // TODO
+        //setPGIMode(parameters.pgi());
+        //setDemosaicingMode(parameters.demosaicingMode());
+        //setNoiseReduction(parameters.noiseReduction());
+        //setSharpnessEnhancement(parameters.sharpnessEnhancement());
+        setWhiteBalanceRatios(parameters);
+
         cam_->StartGrabbing();
         user_output_selector_enums_ = detectAndCountNumUserOutputs();
         device_user_id_ = cam_->DeviceUserID.GetValue();
@@ -2379,6 +2387,40 @@ int PylonCameraImpl<CameraTraitT>::getBalanceWhiteAuto()
     catch ( const GenICam::GenericException &e )
     {
         return -2; // Error
+    }
+}
+
+template <typename CameraTraitT>
+void PylonCameraImpl<CameraTraitT>::setWhiteBalanceRatios(const PylonCameraParameter& parameters)
+{
+    // TODO: Check for auto white balance and raise a warning if it is enabled
+
+    if ( parameters.balance_ratio_ )
+    {
+        ROS_INFO_STREAM("Setting white blance R,G,B channels");
+        try
+        {
+            if ( GenApi::IsAvailable(cam_->BalanceRatioSelector) && GenApi::IsAvailable(cam_->BalanceRatio) )
+            {
+                cam_->BalanceRatioSelector.SetValue(BalanceRatioSelectorEnums::BalanceRatioSelector_Red);
+                cam_->BalanceRatio.SetValue(parameters.balance_red_);
+                cam_->BalanceRatioSelector.SetValue(BalanceRatioSelectorEnums::BalanceRatioSelector_Green);
+                cam_->BalanceRatio.SetValue(parameters.balance_green_);
+                cam_->BalanceRatioSelector.SetValue(BalanceRatioSelectorEnums::BalanceRatioSelector_Blue);
+                cam_->BalanceRatio.SetValue(parameters.balance_blue_);
+            }
+            else
+            {
+                ROS_WARN_STREAM("Trying to set white balance R,G,B channels, but "
+                    << "BalanceRatio is unavailable for this camera");
+            }
+        }
+        catch ( const GenICam::GenericException &e )
+        {
+            ROS_ERROR_STREAM("Error while configuring white balance ratios: "
+                    << e.GetDescription());
+            return;
+        }
     }
 }
 

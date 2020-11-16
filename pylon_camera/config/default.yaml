@@ -19,6 +19,19 @@ camera_info_url: ""
 #  Default values are 'mono8' and 'rgb8'
 # image_encoding: "mono8"
 
+#  Mode of auto white balance.
+#  The supported modes are 0 (off), 1 (once), or 2 (continuous)
+# balance_white_auto: 0
+
+#  If white balance auto is 0 (off), the individual white balance color channels
+#  can be set. To enable, set balance_ratio to true and then provide values
+#  for each of the balance_red, balance_green, balance_blue channels.
+#  Values for each channel should be in [0.0, 16.0]
+# balance_ratio: true
+# balance_red: 1.6
+# balance_green: 1.0
+# balance_blue: 2.65
+
 #  Binning factor to get downsampled images. It refers here to any camera
 #  setting which combines rectangular neighborhoods of pixels into larger
 #  "super-pixels." It reduces the resolution of the output image to
