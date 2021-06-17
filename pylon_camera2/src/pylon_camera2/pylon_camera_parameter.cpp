@@ -88,6 +88,7 @@ void PylonCameraParameter::readFromRosParameterServer(const ros::NodeHandle& nh)
     nh.param<std::string>("camera_frame", camera_frame_, "pylon_camera");
 
     nh.param<std::string>("device_user_id", device_user_id_, "");
+    std::cout << "device_user_id is " << device_user_id_ << std::endl;
 
     if ( nh.hasParam("frame_rate") )
     {
