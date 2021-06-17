@@ -173,13 +173,13 @@ void PylonCameraParameter::readFromRosParameterServer(const ros::NodeHandle& nh)
         if ( nh.hasParam("noise_reduction") )
         {
             nh.getParam("noise_reduction", noise_reduction_);
-            std::cout << "noise reduction set to" << noise_reduction_ << std::endl;
+            std::cout << "noise reduction set to " << noise_reduction_ << std::endl;
         }
 
         if ( nh.hasParam("sharpness_enhancement") )
         {
             nh.getParam("sharpness_enhancement", sharpness_enhancement_);
-            std::cout << "sharpness enhancement set to" << sharpness_enhancement_ << std::endl;
+            std::cout << "sharpness enhancement set to " << sharpness_enhancement_ << std::endl;
         }
     }
 
